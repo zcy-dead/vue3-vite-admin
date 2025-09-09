@@ -1,1 +1,0 @@
-import{_ as e}from"./_plugin-vue_export-helper-DlAUqK2U.js";import{z as c,A as t}from"./vue-B-hDfJul.js";const o={},s={class:"app-contanier"};function n(r,a){return t(),c("div",s," test ")}const i=e(o,[["render",n],["__scopeId","data-v-c6bedbc6"]]);export{i as default};
