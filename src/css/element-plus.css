@@ -1,0 +1,117 @@
+/* ==================== 进度条样式 ==================== */
+#nprogress .bar {
+  background: var(--active-text-color) !important;
+  height: 2px !important;
+}
+
+/* ==================== 下拉菜单(el-popper)容器样式 ==================== */
+.custom-dropdown-popper {
+  background-color: var(--bg-color-quaternary) !important;
+  z-index: 9999 !important;
+  border: none !important;
+  box-shadow: var(--box-shadow-primary) !important;
+}
+
+/* 下拉菜单内容样式 */
+.custom-dropdown-popper .el-dropdown-menu {
+  background-color: transparent !important;
+  overflow: hidden !important;
+}
+
+/* 菜单项基础样式 */
+.custom-dropdown-popper .el-dropdown-menu__item {
+  color: var(--text-color-tertiary) !important;
+  background-color: transparent !important;
+}
+
+/* 鼠标悬停状态 */
+.custom-dropdown-popper .el-dropdown-menu__item:hover {
+  color: var(--text-color-tertiary) !important;
+  background-color: #454647 !important;
+}
+
+/* 鼠标按下状态 */
+.custom-dropdown-popper .el-dropdown-menu__item:active {
+  color: var(--text-color-tertiary) !important;
+  background-color: var(--bg-color-quaternary) !important;
+}
+
+/* 禁用状态 */
+.custom-dropdown-popper .el-dropdown-menu__item.is-disabled {
+  color: #838385 !important;
+  background-color: var(--bg-color-quaternary) !important;
+  cursor: not-allowed !important;
+}
+
+/* 箭头样式  */
+.custom-dropdown-popper .el-popper__arrow {
+  width: 12px !important;
+  height: 12px !important;
+  position: absolute !important;
+  visibility: hidden !important;
+}
+
+.custom-dropdown-popper .el-popper__arrow::before {
+  background-color: var(--bg-color-quaternary) !important;
+  border: none !important;
+  width: 12px !important;
+  height: 12px !important;
+  visibility: visible !important;
+}
+
+
+/* ==================== 表单(el-form)容器样式 ==================== */
+.custom-form {
+  width: 99% !important;
+  height: 100% !important;
+  background-color: var(--bg-color-primary) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+}
+
+.custom-form-item .el-form-item {
+  width: 200px !important;
+}
+
+.custom-form-item .el-form-item__label {
+  color: var(--text-color-primary) !important;
+}
+
+.custom-form-item .el-form-item__content {
+  justify-content: flex-end !important;
+}
+
+/* ==================== 表格(el-table)容器样式 ==================== */
+.custom-table {
+  border-radius: 8px !important;
+  color: var(--text-color-primary) !important;
+  background-color: var(--bg-color-primary) !important;
+  border: none !important;
+
+  --el-table-header-bg-color: var(--bg-color-primary) !important;
+  --el-table-header-text-color: var(--text-color-primary) !important;
+  --el-table-row-hover-bg-color: var(--hover-bg-color-table) !important;
+  --el-table-border: var(--border-table) !important;
+  --el-table-border-color: var(--border-color-table) !important;
+}
+
+.custom-table .el-table__header {
+  background-color: var(--bg-color-primary) !important;
+}
+
+.custom-table .el-table__header .el-table__cell {
+  border: var(--border-table) !important;
+}
+
+.custom-table .el-table__row {
+  background-color: var(--bg-color-primary) !important;
+}
+
+.custom-table .el-table__row .el-table__cell {
+  border: var(--border-table) !important;
+}
+
+.custom-table .el-table__fixed-header {
+  background-color: var(--bg-color-primary) !important;
+}

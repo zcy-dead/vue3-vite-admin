@@ -1,0 +1,28 @@
+html.dark {
+  /* ===== 自定义深色变量 ===== */
+
+  /* 背景颜色 */
+  --bg-color-primary: #121212;
+  --bg-color-secondary: #0a0a0a;
+  --bg-color-tertiary: #474747;
+  --bg-color-quaternary: #303133;
+
+  --hover-bg-color: #1d1e1f;
+  --hover-bg-color-table: #1d1e1f;
+
+  --active-bg-color: #1d1e1f;
+
+  /* 文字颜色 */
+  --text-color-primary: #CCCCCC;
+  --text-color-secondary: #5d5f62;
+  --text-color-tertiary: #ffffff;
+
+  /* 边框颜色 */
+  --border-color: #2b2b2b;
+  --border-primary: 1px solid var(--border-color);
+  --border-color-table: rgb(49, 49, 49);
+  --border-table: 1px solid var(--border-color-table);
+
+  /* 盒子阴影 */
+  --box-shadow-primary: 0 4px 8px rgba(255, 255, 255, 0.1);
+}

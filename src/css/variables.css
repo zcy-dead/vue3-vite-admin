@@ -1,0 +1,89 @@
+/* 全局 CSS 变量，这种变量不仅可以在 CSS 和 SCSS 中使用，还可以导入到 JS 中使用 */
+:root {
+
+  /* NavigationBar 组件 */
+  --layout-navigationbar-height: 50px;
+  --layout-navigationbar-bg-color: var(--bg-color-primary);
+  --layout-navigationbar-text-color: var(--text-color-primary);
+  --layout-navigationbar-border: var(--border-primary);
+
+  /* TagsView  组件 */
+  --layout-tagsview-height: 40px;
+  --layout-tagsview-bg-color: var(--bg-color-primary);
+  --layout-tagsview-border: var(--border-primary);
+  --layout-tagsview-tag-text-color: var(--text-color-primary);
+  --layout-tagsview-tag-bg-color: var(--bg-color-primary);
+  --layout-tagsview-tag-hover-bg-color: var(--hover-bg-color);
+  --layout-tagsview-tag-active-bg-color: var(--active-bg-color);
+  --layout-tagsview-tag-active-text-color: var(--active-text-color);
+  --layout-tagsview-tag-border: var(--border-primary);
+  --layout-tagsview-contextmenu-text-color: var(--text-color-primary);
+  --layout-tagsview-contextmenu-bg-color: var(--bg-color-primary);
+  --layout-tagsview-contextmenu-hover-bg-color: var(--hover-bg-color);
+  --layout-tagsview-contextmenu-hover-text-color: var(--active-text-color);
+  --layout-tagsview-contextmenu-box-shadow: var(--box-shadow-primary);
+
+  /* Logo 组件 */
+  --layout-logo-width: 220px;
+  --layout-logo-bg-color: var(--bg-color-primary);
+  --layout-logo-text-color: var(--text-color-primary);
+  --layout-logo-border: var(--border-primary);
+
+  /* Header 区域 = NavigationBar 组件 + Tag 组件 */
+  --layout-header-height: calc(var(--layout-navigationbar-height) + var(--layout-tagsview-height));
+
+  /* Sidebar 组件 */
+  --layout-sidebar-height: calc(100vh - var(--layout-header-height));
+  --layout-sidebar-width: 220px;
+  --layout-sidebar-hide-width: 58px;
+  --layout-sidebar-bg-color: var(--bg-color-primary);
+  --layout-sidebar-menu-item-height: 60px;
+  --layout-sidebar-menu-bg-color: var(--bg-color-primary);
+  --layout-sidebar-menu-text-color: var(--text-color-primary);
+  --layout-sidebar-menu-active-text-color: var(--active-text-color);
+  --layout-sidebar-menu-hover-bg-color: var(--hover-bg-color);
+  --layout-sidebar-menu-active-bg-color: var(--active-bg-color);
+
+  /* RightPanel 组件  */
+  --layout-rightpanel-bg-color: var(--bg-color-tertiary);
+
+  /* Setting 组件  */
+  --layout-setting-bg-color: var(--bg-color-primary);
+  --layout-setting-text-color: var(--text-color-primary);
+
+  /* Footer 组件 */
+  --layout-footer-height: 50px;
+  --layout-footer-bg-color: var(--bg-color-secondary);
+  --layout-footer-text-color: var(--text-color-secondary);
+
+  /* AppMain 组件 */
+  --layout-appmain-height: calc(--layout-sidebar-height);
+  --layout-appmain-text-color: var(--text-color-primary);
+  --layout-appmain-bg-color: var(--bg-color-secondary);
+
+}
+
+/* 内容区放大时，将不需要的组件隐藏 */
+body.content-large {
+  /* Logo 组件 */
+  --layout-logo-width: 0px;
+  /* Sidebar 组件 */
+  --layout-sidebar-width: 0px;
+  --layout-sidebar-hide-width: 0px;
+}
+
+/* 内容区全屏时，将不需要的组件隐藏 */
+body.content-full {
+  /* Logo 组件 */
+  --layout-logo-width: 0px;
+  /* NavigationBar 组件 */
+  --layout-navigationbar-height: 0px;
+  /* TagsView 组件 */
+  --layout-tagsview-height: 0px;
+  /* Header 区域 */
+  --layout-header-height: 0px;
+  /* Sidebar 组件 */
+  --layout-sidebar-width: 0px;
+  --layout-sidebar-hide-width: 0px;
+  --layout-sidebar-height: 100vh;
+}

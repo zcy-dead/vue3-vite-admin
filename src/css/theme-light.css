@@ -1,0 +1,28 @@
+:root {
+  /* ===== 自定义浅色变量 ===== */
+
+  /* 背景颜色 */
+  --bg-color-primary: #fdfdfd;
+  --bg-color-secondary: #F0F0F0;
+  --bg-color-tertiary: #cfcccb;
+  --bg-color-quaternary: #303133;
+
+  --hover-bg-color: #e3e3e3;
+  --hover-bg-color-table: #f0f0f0;
+
+  --active-bg-color: #d5d4d4;
+
+  /* 文字颜色 */
+  --text-color-primary: #121212;
+  --text-color-secondary: #b1b4bb;
+  --text-color-tertiary: #ffffff;
+
+  /* 边框颜色 */
+  --border-color: #d3d4d4;
+  --border-primary: 1px solid var(--border-color);
+  --border-color-table: #e5e5e5;
+  --border-table: 1px solid var(--border-color-table);
+
+  /* 盒子阴影 */
+  --box-shadow-primary: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
