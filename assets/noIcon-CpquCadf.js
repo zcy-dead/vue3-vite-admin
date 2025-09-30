@@ -1,0 +1,1 @@
+import{_ as o}from"./index-DftMtz74.js";import{z as c,A as e}from"./vue-CLSBFK-B.js";import"./element-DBeAxFu9.js";const t={},n={class:"app-contanier"};function r(s,a){return e(),c("div",n," 无图标路由 ")}const i=o(t,[["render",r],["__scopeId","data-v-b2ce981f"]]);export{i as default};

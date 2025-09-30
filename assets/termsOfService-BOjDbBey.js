@@ -1,0 +1,1 @@
+import{_ as s}from"./index-DftMtz74.js";import{z as t,A as o,B as r}from"./vue-CLSBFK-B.js";import"./element-DBeAxFu9.js";const c={},a={class:"terms-of-service"};function n(_,e){return o(),t("div",a,[...e[0]||(e[0]=[r("h1",null,"服务条款",-1),r("p",null,"这里是服务条款的内容...",-1)])])}const m=s(c,[["render",n],["__scopeId","data-v-6a04e19b"]]);export{m as default};

@@ -1,0 +1,1 @@
+import{_ as e}from"./index-DftMtz74.js";import{z as t,A as o}from"./vue-CLSBFK-B.js";import"./element-DBeAxFu9.js";const c={},r={class:"app-contanier"};function a(s,n){return o(),t("div",r," 三级路由 ")}const d=e(c,[["render",a],["__scopeId","data-v-187a2c8a"]]);export{d as default};

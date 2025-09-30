@@ -1,0 +1,1 @@
+import{_ as r}from"./index-DftMtz74.js";import{z as t,A as c,B as o}from"./vue-CLSBFK-B.js";import"./element-DBeAxFu9.js";const s={},a={class:"privacy-policy"};function n(i,e){return c(),t("div",a,[...e[0]||(e[0]=[o("h1",null,"隐私政策",-1),o("p",null,"这里是隐私政策的内容...",-1)])])}const d=r(s,[["render",n],["__scopeId","data-v-01b7fa8e"]]);export{d as default};
