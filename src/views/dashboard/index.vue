@@ -2,6 +2,11 @@
 import type { ECharts } from "echarts"
 import * as echarts from "echarts"
 import { onBeforeUnmount, onMounted, ref, watch } from "vue"
+import NumberAnimation from "@/components/NumberAnimation/index.vue"
+
+defineOptions({
+  name: "Dashboard"
+})
 
 // #region  Card数据
 function generateCardData() {
@@ -267,7 +272,7 @@ watch(() => xData, () => {
               {{ card.title }}
             </div>
             <div class="value">
-              {{ card.value.toFixed(card.precision) }}
+              <NumberAnimation :end-val="Number(card.value.toFixed(card.precision))" :duration="1000" easing="easeOut" :decimal-places="0" />
             </div>
             <div class="detail">
               <div class="description">

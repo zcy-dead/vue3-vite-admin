@@ -1,8 +1,5 @@
-const SYSTEM_NAME = "SUIBIDAO"
+const SYSTEM_NAME = "vue3-vite-admin"
 
-/**
- *缓存数据时用到的 Key
- */
 export class CookieKey {
   /**
    * 用户登录 Token 的缓存键

@@ -21,7 +21,7 @@
   --layout-tagsview-contextmenu-bg-color: var(--bg-color-primary);
   --layout-tagsview-contextmenu-hover-bg-color: var(--hover-bg-color);
   --layout-tagsview-contextmenu-hover-text-color: var(--active-text-color);
-  --layout-tagsview-contextmenu-box-shadow: var(--box-shadow-primary);
+  --layout-tagsview-contextmenu-border: var(--border-primary);
 
   /* Logo 组件 */
   --layout-logo-width: 220px;

@@ -1,28 +1,16 @@
 import Cookies from "js-cookie"
-// 定义缓存键常量，用于存储和访问 Token
 import { CookieKey } from "@/constants/cookie"
 
-/**
- * 获取当前存储的 Token。
- *
- * @returns {string | undefined} 返回存储在 Cookie 中的 Token 值，如果不存在则返回 undefined。
- */
-export function getToken() {
+// #region Token的获取、设置、移除
+export function getToken(): string | undefined {
   return Cookies.get(CookieKey.TOKEN)
 }
 
-/**
- * 设置 Token 到 Cookie 中。
- *
- * @param {string} token - 要存储的 Token 值。
- */
-export function setToken(token: string) {
+export function setToken(token: string): void {
   Cookies.set(CookieKey.TOKEN, token)
 }
 
-/**
- * 从 Cookie 中移除 Token。
- */
-export function removeToken() {
+export function removeToken(): void {
   Cookies.remove(CookieKey.TOKEN)
 }
+// #endregion

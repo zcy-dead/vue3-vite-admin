@@ -1,6 +1,6 @@
 import { computed, watchEffect } from "vue"
 import { useSettingStore } from "@/pinia/stores/setting"
-import { setCssVar } from "@/utils/css"
+import { setCssVar } from "@/utils/cssVar"
 
 export function useActiveColor() {
   const settingStore = useSettingStore()

@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import type { FormItemRule } from "element-plus"
 import { CirclePlus, Delete, Download, Refresh, RefreshRight, Search } from "@element-plus/icons-vue"
 import { ElMessage, ElMessageBox } from "element-plus"
 import { reactive, ref } from "vue"
@@ -219,6 +220,8 @@ const tableData = ref<UserInfo[]>([
   }
 ])
 
+const originalTableData = [...tableData.value]
+
 // #region 表格数据筛选
 /** 筛选性别 */
 function filterGender(value: string, row: UserInfo) {
@@ -320,12 +323,98 @@ function handleSelectionDelete() {
 
 // #region 改
 /** 编辑 */
-function handleEdit(index: number, row: UserInfo) {
-  console.log(index, row)
+// 新增响应式数据
+const editDialogVisible = ref(false)
+
+const editForm = reactive<UserInfo>({
+  id: 0,
+  name: "",
+  gender: "",
+  age: 0,
+  phone: "",
+  email: "",
+  address: "",
+  createTime: ""
+})
+
+// 完整定义所有字段的规则
+const editRules: Record<keyof UserInfo, FormItemRule[]> = {
+  id: [], // 无需验证的字段使用空数组
+  name: [
+    { required: true, message: "用户名不能为空", trigger: "blur" },
+    { min: 2, max: 10, message: "用户名长度需在2-10个字符", trigger: "blur" }
+  ],
+  gender: [
+    { required: true, message: "请选择性别", trigger: "change" }
+  ],
+  age: [
+    {
+      type: "number",
+      required: true,
+      message: "年龄必须为18-100岁之间的数字",
+      trigger: "blur",
+      min: 18,
+      max: 100
+    }
+  ],
+  phone: [
+    {
+      pattern: /^1[3-9]\d{9}$/,
+      required: true,
+      message: "请输入有效的11位手机号码",
+      trigger: "blur"
+    }
+  ],
+  email: [
+    {
+      type: "email",
+      required: true,
+      message: "请输入有效的邮箱地址",
+      trigger: ["blur", "change"]
+    }
+  ],
+  address: [
+    { required: true, message: "地址不能为空", trigger: "blur" },
+    { min: 5, max: 50, message: "地址长度需在5-50个字符", trigger: "blur" }
+  ],
+  createTime: [] // 创建时间通常不可编辑，无需验证
+}
+
+// 获取表单实例
+const editFormRef = ref()
+
+function handleEdit(_index: number, row: UserInfo) {
+  // 深拷贝当前行数据到表单
+  Object.assign(editForm, JSON.parse(JSON.stringify(row)))
+  editDialogVisible.value = true
+}
+
+async function submitEditForm() {
+  try {
+    await editFormRef.value.validate()
+
+    // 找到原始数据索引
+    const targetIndex = tableData.value.findIndex(item => item.id === editForm.id)
+
+    if (targetIndex !== -1) {
+      // 更新数据
+      tableData.value[targetIndex] = { ...editForm }
+
+      // 更新分页数据
+      updatePageData()
+      handlePageAfterDelete()
+
+      ElMessage.success("修改成功")
+      editDialogVisible.value = false
+    }
+  } catch (error) {
+    console.log("表单验证失败", error)
+  }
 }
 // #endregion
 
 // #region 查
+
 const searchData = reactive({
   username: "",
   usergender: "",
@@ -363,7 +452,7 @@ function resetSearch() {
   searchData.usergender = ""
   searchData.usercreatedtime = null
 
-  tableData.value = [...tableData.value]
+  tableData.value = originalTableData
   total.value = tableData.value.length
   updatePageData()
   handlePageAfterDelete()
@@ -426,8 +515,8 @@ function resetSearch() {
             </el-button>
           </div>
           <div>
-            <el-button type="primary" :icon="Download" circle class="item-right" />
-            <el-button type="primary" :icon="RefreshRight" circle class="item-right" />
+            <el-button type="primary" :icon="Download" circle />
+            <el-button type="primary" :icon="RefreshRight" circle class="item-right" @click="resetSearch()" />
           </div>
         </div>
       </div>
@@ -496,6 +585,38 @@ function resetSearch() {
         />
       </div>
     </div>
+    <el-dialog v-model="editDialogVisible" title="编辑用户" width="500px">
+      <el-form :model="editForm" :rules="editRules" ref="editFormRef" label-width="80px">
+        <el-form-item label="用户名" prop="name">
+          <el-input v-model="editForm.name" placeholder="请输入用户名" />
+        </el-form-item>
+        <el-form-item label="性别" prop="gender">
+          <el-select v-model="editForm.gender" placeholder="请选择性别">
+            <el-option label="男" value="男" />
+            <el-option label="女" value="女" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="年龄" prop="age">
+          <el-input-number
+            v-model="editForm.age"
+            :min="18"
+            :max="100"
+            placeholder="请输入年龄"
+          />
+        </el-form-item>
+        <!-- 其他字段类似结构 -->
+      </el-form>
+      <template #footer>
+        <div class="dialog-footer">
+          <el-button @click="editDialogVisible = false">
+            取消
+          </el-button>
+          <el-button type="primary" @click="submitEditForm">
+            保存
+          </el-button>
+        </div>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
@@ -543,6 +664,7 @@ function resetSearch() {
       display: flex;
       align-items: center;
       justify-content: space-between;
+      margin-bottom: 10px;
       .item-left {
         margin-left: 20px;
       }

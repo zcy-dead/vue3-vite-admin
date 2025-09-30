@@ -1,12 +1,3 @@
-/**
- * 1.检查用户是否登录（通过 getToken 函数）。
- * 2.如果未登录，判断目标路由是否在免登录白名单中。
- *  -如果目标路由在白名单中（例如登录页面、注册页面等），允许用户访问，返回 true。
- *  -如果目标路由不在白名单中，重定向用户到登录页面（LOGIN_PATH）。
- * 3.如果已登录，检查用户是否已经获取了权限角色。
- *  -如果用户已经登录，接下来需要检查用户是否已经获取了权限角色。这通常存储在用户的 Token 中
- * 4.如果未获取权限角色，则动态加载用户的权限角色并更新路由。
- */
 import type { Router } from "vue-router"
 import { ElMessage } from "element-plus"
 import NProgress from "nprogress"
@@ -32,9 +23,7 @@ export function registerGuard(router: Router) {
 
     // 1. 处理未登录情况
     if (!hasToken) {
-      // 如果在免登录的白名单中，则直接进入
       if (isWhiteList(to)) return true
-      // 其他没有访问权限的页面将被重定向到登录页面
       return LOGIN_PATH
     }
 

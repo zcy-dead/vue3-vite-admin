@@ -1,48 +1,80 @@
-import type { Ref } from "vue"
 import type { SettingConfig } from "@/types/setting"
 import { defineStore } from "pinia"
-import { ref, watch } from "vue"
-import { settingConfig } from "@/types/setting"
-import { setSettingConfig } from "@/utils/localStorage"
-
-type SettingStore = {
-  [Key in keyof SettingConfig]: Ref<SettingConfig[Key]>
-}
-
-type SettingStoreKey = keyof SettingStore
+import { computed, reactive, watch } from "vue"
+import { DEFAULT_CONFIG } from "@/types/setting"
+import { getSettingConfig, setSettingConfig } from "@/utils/localStorage"
 
 export const useSettingStore = defineStore("setting", () => {
-  // 状态对象
-  const state = {} as SettingStore
+  // 统一状态管理
+  const state = reactive<SettingConfig>({ ...DEFAULT_CONFIG, ...getSettingConfig() })
 
-  // 获取要缓存的数据：将 state 对象转化为 settings 对象
-  const getCacheData = () => {
-    const settings = {} as SettingConfig
-    for (const [key, value] of Object.entries(state)) {
-      // @ts-expect-error ignore
-      settings[key as SettingStoreKey] = value.value
-    }
-    return settings
+  // 计算属性封装配置项
+  const showSetting = computed({
+    get: () => state.showSetting,
+    set: val => (state.showSetting = val)
+  })
+
+  const layoutColor = computed({
+    get: () => state.layoutColor,
+    set: val => (state.layoutColor = val)
+  })
+
+  const showTagsView = computed({
+    get: () => state.showTagsView,
+    set: val => (state.showTagsView = val)
+  })
+
+  const showLogo = computed({
+    get: () => state.showLogo,
+    set: val => (state.showLogo = val)
+  })
+
+  const showFooter = computed({
+    get: () => state.showFooter,
+    set: val => (state.showFooter = val)
+  })
+
+  const showThemeSwitch = computed({
+    get: () => state.showThemeSwitch,
+    set: val => (state.showThemeSwitch = val)
+  })
+
+  const showScreenfull = computed({
+    get: () => state.showScreenfull,
+    set: val => (state.showScreenfull = val)
+  })
+
+  const cacheTagsView = computed({
+    get: () => state.cacheTagsView,
+    set: val => (state.cacheTagsView = val)
+  })
+
+  const toggleFullScreen = computed({
+    get: () => state.toggleFullScreen,
+    set: val => (state.toggleFullScreen = val)
+  })
+
+  // 保存配置到localStorage
+  const saveSettings = () => {
+    setSettingConfig(state)
   }
 
-  // 遍历 LayoutsConfig 对象的键值对
-  for (const [key, value] of Object.entries(settingConfig)) {
-    // 使用类型断言来指定 key 的类型，将 value 包装在 ref 函数中，创建一个响应式变量
-    const refValue = ref(value)
-    // @ts-expect-error ignore
-    state[key as SettingsStoreKey] = refValue
-    // 监听每个响应式变量
-    watch(refValue, () => {
-      // 缓存
-      const settings = getCacheData()
-      setSettingConfig(settings)
-    })
-  }
+  // 自动监听配置变化
+  watch(
+    () => ({ ...state }),
+    () => saveSettings(),
+    { deep: true }
+  )
 
-  const initSetting = () => {
-    const settings = getCacheData()
-    setSettingConfig(settings)
+  return {
+    showSetting,
+    layoutColor,
+    showTagsView,
+    showLogo,
+    showFooter,
+    showThemeSwitch,
+    showScreenfull,
+    cacheTagsView,
+    toggleFullScreen
   }
-
-  return { ...state, initSetting }
 })

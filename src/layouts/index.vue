@@ -8,7 +8,7 @@ import Sidebar from "@/layouts/components/Sidebar/index.vue"
 import TagsView from "@/layouts/components/TagsView/index.vue"
 import { useSettingStore } from "@/pinia/stores/setting"
 import { useSidebarStore } from "@/pinia/stores/sidebar"
-import { getCssVar, setCssVar } from "@/utils/css"
+import { getCssVar, setCssVar } from "@/utils/cssVar"
 
 const settingStore = useSettingStore()
 

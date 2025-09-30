@@ -16,14 +16,13 @@ interface ScreenFull {
   /** 关闭全屏提示语 */
   exitTips?: string
   /** 是否只针对内容区 */
-  content?: boolean
+  isfull?: boolean
 }
 
 const {
   element = "html",
   openTips = "全屏",
-  exitTips = "退出全屏",
-  content = false
+  exitTips = "退出全屏"
 } = defineProps<ScreenFull>()
 
 const CONTENT_LARGE = "content-large"
@@ -92,14 +91,14 @@ function handleContentFullClick() {
 <template>
   <div>
     <!-- 全屏 -->
-    <el-tooltip v-if="!content" effect="dark" placement="bottom" :content="fullscreenTips">
+    <el-tooltip v-if="isfull" effect="dark" placement="bottom" :content="fullscreenTips">
       <ButtonAnimation animation="beat" @click="handleFullscreenClick">
-        <el-icon :size="20">
+        <el-icon :size="18">
           <component :is="fullscreenIconName" />
         </el-icon>
       </ButtonAnimation>
     </el-tooltip>
-    <!-- 工作区 -->
+    <!-- 放大 -->
     <el-dropdown
       v-else
       popper-class="custom-dropdown-popper"
@@ -109,7 +108,7 @@ function handleContentFullClick() {
       <div>
         <el-tooltip content="放大" effect="dark" placement="bottom">
           <ButtonAnimation animation="beat">
-            <el-icon :size="20">
+            <el-icon :size="18">
               <component :is="contentLargeIconName" />
             </el-icon>
           </ButtonAnimation>

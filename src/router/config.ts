@@ -17,18 +17,9 @@ interface RouterConfig {
    * @description 2. 假如项目不需要根据不同的用户来显示不同的页面，则应该将 dynamic: false
    */
   dynamic: boolean
-
-  /**
-   * @name 默认角色
-   * @description 当动态路由功能关闭时：
-   * @description 1. 应该将所有路由都写到常驻路由里面（表明所有登录的用户能访问的页面都是一样的）
-   * @description 2. 系统自动给当前登录用户赋值一个没有任何作用的默认角色
-   */
-  defaultRoles: Array<string>
 }
 
 export const routerConfig: RouterConfig = {
   history: VITE_ROUTER_HISTORY === "hash" ? createWebHashHistory(VITE_PUBLIC_PATH) : createWebHistory(VITE_PUBLIC_PATH),
-  dynamic: true,
-  defaultRoles: ["DEFAULT_ROLE"]
+  dynamic: true
 }

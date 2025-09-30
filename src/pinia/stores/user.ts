@@ -1,6 +1,6 @@
 import { defineStore } from "pinia"
 import { ref } from "vue"
-import { getCurrentUserApi } from "@/apis/users/index"
+import { getCurrentUserApi } from "@/apis/user/index"
 import { useTagsViewStore } from "@/pinia/stores/tagsview"
 import { resetRouter } from "@/router"
 import { setToken as _setToken, getToken, removeToken } from "@/utils/cookie"
@@ -39,14 +39,6 @@ export const useUserStore = defineStore("user", () => {
     roles.value = data.roles
   }
 
-  // 模拟角色变化
-  const changeRoles = (role: string) => {
-    const newToken = `token-${role}`
-    token.value = newToken
-    _setToken(newToken)
-    location.reload()
-  }
-
   // 重置 Token
   const resetToken = () => {
     removeToken()
@@ -63,6 +55,7 @@ export const useUserStore = defineStore("user", () => {
   const resetTagsView = () => {
     tagsViewStore.delAllVisitedViews()
     tagsViewStore.delAllCachedViews()
+    tagsViewStore.delAllAffixedViews()
   }
 
   // 登出
@@ -72,5 +65,5 @@ export const useUserStore = defineStore("user", () => {
     resetTagsView()
   }
 
-  return { userId, username, name, phone, email, roles, token, setToken, getInfo, changeRoles, logout, resetToken }
+  return { userId, username, name, phone, email, roles, token, setToken, getInfo, logout, resetToken }
 })

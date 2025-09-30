@@ -22,20 +22,24 @@ const noHiddenRoutes = computed(() => permissionStore.allRoutes.filter(item => !
 </script>
 
 <template>
-  <el-scrollbar>
-    <el-menu
-      :default-active="activeMenu"
-      :collapse="isCollapse"
-      :collapse-transition="false"
-    >
-      <Menus
-        v-for="noHiddenRoute in noHiddenRoutes"
-        :key="noHiddenRoute.path"
-        :item="noHiddenRoute"
-        :base-path="noHiddenRoute.path"
-      />
-    </el-menu>
-  </el-scrollbar>
+  <div class="menu-container">
+    <el-scrollbar>
+      <el-menu
+        :default-active="activeMenu"
+        :collapse="isCollapse"
+        :collapse-transition="false"
+        popper-class="custom-popper"
+        popper-effect="dark"
+      >
+        <Menus
+          v-for="noHiddenRoute in noHiddenRoutes"
+          :key="noHiddenRoute.path"
+          :item="noHiddenRoute"
+          :base-path="noHiddenRoute.path"
+        />
+      </el-menu>
+    </el-scrollbar>
+  </div>
 </template>
 
 <style lang="scss" scoped>
@@ -51,9 +55,12 @@ const noHiddenRoutes = computed(() => permissionStore.allRoutes.filter(item => !
   }
 }
 
+.menu-container {
+  height: 200px;
+}
+
 .el-scrollbar {
   height: var(--layout-sidebar-height);
-
   /* 修改滚动条轨道的样式 */
   :deep(.el-scrollbar__bar) {
     right: 0;
@@ -102,6 +109,10 @@ const noHiddenRoutes = computed(() => permissionStore.allRoutes.filter(item => !
     }
   }
 
+  :deep(.el-menu-item.is-active .el-icon) {
+    fill: var(--layout-sidebar-menu-active-text-color);
+  }
+
   :deep(.el-menu-item.is-active) {
     @extend %tip-line;
   }
@@ -112,6 +123,34 @@ const noHiddenRoutes = computed(() => permissionStore.allRoutes.filter(item => !
         @extend %tip-line;
       }
     }
+  }
+}
+</style>
+
+<style lang="scss">
+/* 全局悬浮层样式 */
+.custom-popper {
+  .el-menu {
+    background-color: var(--layout-sidebar-menu-bg-color);
+  }
+
+  .el-menu-item,
+  .el-sub-menu__title,
+  .el-sub-menu .el-menu-item {
+    height: 60px;
+    color: var(--layout-sidebar-menu-text-color);
+
+    &:hover {
+      background-color: var(--layout-sidebar-menu-hover-bg-color);
+    }
+    &.is-active {
+      color: var(--layout-sidebar-menu-active-text-color, var(--layout-sidebar-menu-text-color));
+      background-color: var(--layout-sidebar-menu-active-bg-color);
+    }
+  }
+
+  .el-menu-item.is-active .el-icon {
+    fill: var(--layout-sidebar-menu-active-text-color);
   }
 }
 </style>

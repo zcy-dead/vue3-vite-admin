@@ -1,5 +1,106 @@
-# Vue 3 + TypeScript + Vite
+# Vue3-Vite-Admin 后台管理系统
 
-This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+## 项目介绍
 
-Learn more about the recommended Project Setup and IDE Support in the [Vue Docs TypeScript Guide](https://vuejs.org/guide/typescript/overview.html#project-setup).
+Vue3-Vite-Admin 是一个基于 Vue3、Vite、TypeScript 等前沿技术栈构建的现代化后台管理系统。它旨在为开发者提供一个高效、灵活且易于维护的开发框架，用于快速搭建功能丰富、性能卓越的后台管理应用。通过集成多种强大的技术组件和工具，该系统能够满足不同业务场景下的数据展示、操作与管理需求，同时具备良好的可扩展性和可定制性，方便开发者根据具体项目要求进行二次开发和优化。
+
+## 技术栈
+
+- **Vue3**：Vue.js 的最新版本，带来更强大的 Composition API 和性能优化。
+- **Vite**：下一代前端构建工具，提供极速的冷启动和热更新体验。
+- **TypeScript**：为 JavaScript 添加静态类型，提升代码质量和开发效率。
+- **Scss**：CSS 预处理器，提供更强大的样式编写能力。
+- **Axios**：基于 Promise 的 HTTP 客户端，用于浏览器和 node.js。
+- **Vue Router**：Vue.js 的官方路由管理器，用于构建单页面应用。
+- **Pinia**：Vue3 的官方状态管理库，提供更简洁的 API 和更好的类型支持。
+- **Element Plus**：基于 Vue3 的桌面端 UI 组件库，提供丰富、美观的组件。
+- **Echarts**：开源的可视化图表库，用于数据可视化展示。
+
+## 项目特点
+
+- **高性能**：利用 Vite 和 Vue3 的高效构建和渲染机制，确保快速响应。
+- **易用性**：提供完善的项目初始化配置和开发文档，降低学习成本。
+- **可扩展性**：基于组件化和模块化开发，方便功能扩展和定制。
+- **安全性**：支持 HTTPS 加密通信和细粒度的权限控制。
+
+## 适用场景
+
+适用于企业资源管理（ERP）、客户关系管理（CRM）、内容管理系统（CMS）、电商平台后台等多种后台管理项目。
+
+## 安装与运行
+
+### 前提条件
+
+- Node.js (推荐使用 v14+)
+- pnpm (推荐使用 v6+)
+
+### 安装步骤
+
+1. **克隆项目**
+
+   ```bash
+   git clone https://github.com/your-repo/vue3-vite-admin.git
+   cd vue3-vite-admin
+   ```
+
+2. **安装依赖**
+
+   ```bash
+   pnpm install
+   ```
+
+3. **启动开发服务器**
+
+   ```bash
+   pnpm run dev
+   ```
+
+## 功能模块
+
+### 登录与注册
+
+- 提供用户登录和注册功能，支持多种认证方式（如用户名/密码、手机号/验证码等）。
+- 登录成功后，根据用户权限动态加载菜单。
+
+### 菜单管理
+
+- 动态生成菜单，支持多级菜单结构。
+- 菜单权限控制，根据用户角色展示不同的菜单项。
+
+### 数据可视化
+
+- 集成 Echarts，提供丰富的数据可视化图表（如折线图、柱状图、饼图等）。
+- 支持自定义图表配置，满足不同数据展示需求。
+
+### 表单操作
+
+- 提供丰富的表单组件，支持数据校验和动态表单。
+- 支持表单的增删改查操作，方便数据管理。
+
+### 表格展示
+
+- 使用 Element Plus 的表格组件，展示数据列表。
+- 支持分页、排序、筛选等功能，提升数据浏览体验。
+
+### 权限管理
+
+- 基于 Pinia 实现细粒度的权限控制，支持角色和权限的动态配置。
+- 权限校验覆盖页面访问、菜单显示、按钮操作等多个层面。
+
+## 开发指南
+
+### 状态管理
+
+- 使用 Pinia 进行状态管理，定义全局状态和模块化状态，方便跨组件通信。
+
+### 路由管理
+
+- 使用 Vue Router 配置页面路由，支持动态路由和嵌套路由，实现页面的灵活跳转。
+
+### 网络请求
+
+- 使用 Axios 封装 API 请求，支持请求和响应拦截，统一处理错误和数据转换。
+
+### 样式管理
+
+- 使用 Scss 编写样式，支持全局样式和组件局部样式，方便样式复用和主题定制。

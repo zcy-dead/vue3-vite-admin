@@ -5,8 +5,6 @@ import { onBeforeUnmount } from "vue"
 
 /** 创建事件总线实例 */
 const emitter = mitt()
-
-/** 定义一个唯一的事件键 */
 const eventName = Symbol("ROUTE_CHANGE")
 
 /** 定义回调函数的类型，接收一个路由位置对象作为参数 */
@@ -21,7 +19,7 @@ export function setRouteChange(to: RouteLocationNormalizedGeneric) {
   latestRoute = to
 }
 
-/** 用于订阅路由变化的 Composable 函数 */
+/** 用于订阅路由变化的函数 */
 export function useRouteListener() {
   const callbackList: Callback[] = []
 

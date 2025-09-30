@@ -1,22 +1,12 @@
 <script lang="ts" setup>
-import { UserFilled } from "@element-plus/icons-vue"
 import ScreenFull from "@/components/ScreenFull/index.vue"
 import ThemeSwitch from "@/components/ThemeSwitch/index.vue"
+import UserCard from "@/components/UserCard/index.vue"
 import Breadcrumb from "@/layouts/components/Breadcrumb/index.vue"
 import Hamburger from "@/layouts/components/Hamburger/index.vue"
 import { useSettingStore } from "@/pinia/stores/setting"
-import { useUserStore } from "@/pinia/stores/user"
-
-import router from "@/router/index"
-
-const userStore = useUserStore()
 
 const settingStore = useSettingStore()
-
-function logout() {
-  userStore.logout()
-  router.push("/login")
-}
 </script>
 
 <template>
@@ -31,7 +21,7 @@ function logout() {
       <!-- 全屏 -->
       <ScreenFull
         v-if="settingStore.showScreenfull"
-        :content="settingStore.toggleFullScreen"
+        :isfull="settingStore.toggleFullScreen"
         class="container-right-item"
       />
       <!-- 主题切换 -->
@@ -40,24 +30,7 @@ function logout() {
         class="container-right-item"
       />
       <!-- 用户信息 折叠 -->
-      <el-dropdown popper-class="custom-dropdown-popper">
-        <div class="container-right-user">
-          <el-avatar :size="30">
-            <el-icon class="usericon">
-              <UserFilled />
-            </el-icon>
-          </el-avatar>
-          <span>{{ userStore.username }}</span>
-        </div>
-        <template #dropdown>
-          <el-dropdown-menu>
-            <el-dropdown-item>个人中心</el-dropdown-item>
-            <el-dropdown-item @click="logout">
-              退出登录
-            </el-dropdown-item>
-          </el-dropdown-menu>
-        </template>
-      </el-dropdown>
+      <UserCard />
     </div>
   </div>
 </template>
@@ -102,27 +75,6 @@ function logout() {
 
   .last-item {
     margin-right: 20px;
-  }
-
-  &-user {
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    margin: 0 10px;
-    outline: none;
-
-    .el-avatar {
-      margin-right: 10px;
-
-      .usericon {
-        color: gray !important;
-      }
-    }
-
-    span {
-      font-size: 16px;
-      color: var(--layout-navigationbar-text-color);
-    }
   }
 }
 </style>

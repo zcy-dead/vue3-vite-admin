@@ -9,12 +9,13 @@ const tagsViewStore = useTagsViewStore()
 
 <template>
   <section class="layout-appmain-container">
+    <!-- 滚动条 -->
     <div class="app-scrollbar">
-      <!-- 内容 -->
+      <!-- 当前路由的组件内容 -->
       <div class="content">
         <router-view v-slot="{ Component, route }">
           <transition name="el-zoom-in-center" mode="out-in">
-            <keep-alive :include="tagsViewStore.cachedViews">
+            <keep-alive :include="tagsViewStore.cachedViews" :max="10">
               <component :is="Component" :key="route.path" />
             </keep-alive>
           </transition>
@@ -48,7 +49,7 @@ const tagsViewStore = useTagsViewStore()
 
   .content {
     flex: 1;
-    padding: 30px 30px 0 30px;
+    padding: 30px 30px 30px 30px;
     color: var(--layout-appmain-text-color);
   }
 }

@@ -1,4 +1,5 @@
-import type { LoginResponseData } from "../account/type"
+/** 模拟用户数据，连接后端后删除该文件 */
+import type { LoginResponseData } from "../user/type"
 
 export const users: LoginResponseData[] = [
   {
@@ -30,7 +31,6 @@ export const users: LoginResponseData[] = [
       email: "reviewer@example.com",
       roles: [
         "user",
-
         "reviewer"
       ],
       token: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIzLVt1c2VyLCByZXZpZXdlcl0iLCJleHAiOjE3NTQ5MDQyODR9.KLGUiNzhTJYD8tHTax_0UwCUnW2VD35zv8ho4vNqqtw"

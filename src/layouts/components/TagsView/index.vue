@@ -1,27 +1,24 @@
 <script lang="ts" setup>
-import type { RouteLocationNormalizedGeneric, RouteRecordRaw, RouterLink } from "vue-router"
+import type { RouteLocationNormalizedGeneric, RouterLink } from "vue-router"
 import type { TagView } from "@/types/tagView"
-import { Close } from "@element-plus/icons-vue"
-import path from "path-browserify"
-import { ref, useTemplateRef, watch } from "vue"
+import { ref, watch } from "vue"
 import { useRoute, useRouter } from "vue-router"
 import ButtonAnimation from "@/components/ButtonAnimation/index.vue"
 import { useRouteListener } from "@/composables/useRouteListener"
-import { usePermissionStore } from "@/pinia/stores/permission"
+import Guding from "@/icons/Guding.vue"
+import Lrarrow from "@/icons/Lrarrow.vue"
 import { useTagsViewStore } from "@/pinia/stores/tagsview"
-
-const router = useRouter()
 
 const route = useRoute()
 
-const tagsViewStore = useTagsViewStore()
+const router = useRouter()
 
-const permissionStore = usePermissionStore()
+const tagsViewStore = useTagsViewStore()
 
 const { listenerRouteChange } = useRouteListener()
 
 /** 标签页组件元素的引用数组 */
-const tagRefs = useTemplateRef<InstanceType<typeof RouterLink>[]>("tagRefs")
+const tagRefs = ref([])
 
 /** 右键菜单的状态 */
 const visible = ref(false)
@@ -35,46 +32,9 @@ const left = ref(0)
 /** 当前正在右键操作的标签页 */
 const selectedTag = ref<TagView>({})
 
-/** 固定的标签页 */
-let affixTags: TagView[] = []
-
 /** 判断标签页是否激活 */
 function isActive(tag: TagView) {
   return tag.path === route.path
-}
-
-/** 判断标签页是否固定 */
-function isAffix(tag: TagView) {
-  return tag.meta?.affix
-}
-
-/** 筛选出固定标签页 */
-function filterAffixTags(routes: RouteRecordRaw[], basePath = "/") {
-  const tags: TagView[] = []
-  routes.forEach((route) => {
-    if (isAffix(route)) {
-      const tagPath = path.resolve(basePath, route.path)
-      tags.push({
-        fullPath: tagPath,
-        path: tagPath,
-        name: route.name,
-        meta: { ...route.meta }
-      })
-    }
-    if (route.children) {
-      const childTags = filterAffixTags(route.children, route.path)
-      tags.push(...childTags)
-    }
-  })
-  return tags
-}
-
-/** 初始化标签页 */
-function initTags() {
-  affixTags = filterAffixTags(permissionStore.allRoutes)
-  for (const tag of affixTags) {
-    tag.name && tagsViewStore.addVisitedView(tag)
-  }
 }
 
 /** 添加标签页 */
@@ -88,7 +48,16 @@ function addTags(route: RouteLocationNormalizedGeneric) {
 /** 刷新选中的标签页 */
 function refreshSelectedTag(view: TagView) {
   tagsViewStore.delCachedView(view)
-  router.replace({ path: `${view.path}`, query: view.query })
+  router.replace({ path: `/redirect${view.path}`, query: view.query })
+}
+
+/** 处理刷新按钮点击事件 */
+function handleRefresh() {
+  // 找到当前激活的标签页
+  const activeTag = tagsViewStore.visitedViews.find(tag => isActive(tag))
+  if (activeTag) {
+    refreshSelectedTag(activeTag)
+  }
 }
 
 /** 关闭选中的标签页 */
@@ -106,13 +75,20 @@ function closeOthersTags() {
   }
   tagsViewStore.delOthersVisitedViews(selectedTag.value)
   tagsViewStore.delOthersCachedViews(selectedTag.value)
+  tagsViewStore.affixedViews.forEach((tag) => {
+    tagsViewStore.addVisitedView(tag)
+    tagsViewStore.addCachedView(tag)
+  })
 }
 
 /** 关闭所有标签页 */
 function closeAllTags(view: TagView) {
   tagsViewStore.delAllVisitedViews()
   tagsViewStore.delAllCachedViews()
-  if (affixTags.some(tag => tag.path === route.path)) return
+  tagsViewStore.affixedViews.forEach((tag) => {
+    tagsViewStore.addVisitedView(tag)
+    tagsViewStore.addCachedView(tag)
+  })
   toLastView(tagsViewStore.visitedViews, view)
 }
 
@@ -125,8 +101,7 @@ function toLastView(visitedViews: TagView[], view: TagView) {
   } else {
     // 如果 TagsView 全部被关闭了，则默认重定向到主页
     if (view.name === "Dashboard") {
-      // 重新加载主页
-      router.push({ path: `${view.path}`, query: view.query })
+      router.push({ path: `/redirect${view.path}`, query: view.query })
     } else {
       router.push("/")
     }
@@ -155,11 +130,21 @@ function closeMenu() {
   visible.value = false
 }
 
+/** 切换标签页的固定状态 */
+function toggleAffix(tag: TagView) {
+  const isAffixed = tagsViewStore.affixedViews.some(v => v.path === tag.path)
+  if (isAffixed) {
+    // 如果已经固定，则取消固定
+    tagsViewStore.delAffixedViews(tag)
+  } else {
+    // 如果未固定，则添加固定
+    tagsViewStore.addAffixedViews(tag)
+  }
+}
+
 watch(visible, (value) => {
   value ? document.body.addEventListener("click", closeMenu) : document.body.removeEventListener("click", closeMenu)
 })
-
-initTags()
 
 // 监听路由变化
 listenerRouteChange((route) => {
@@ -177,32 +162,53 @@ listenerRouteChange((route) => {
         :class="{ active: isActive(tag) }"
         class="tagsview-item"
         :to="{ path: tag.path, query: tag.query }"
-        @click.middle="!isAffix(tag) && closeSelectedTag(tag)"
+        @click.middle="!tagsViewStore.isAffixedViews(tag) && closeSelectedTag(tag)"
         @contextmenu.prevent="openMenu(tag, $event)"
       >
         <span class="router-name">{{ tag.meta?.title }}</span>
-        <el-icon v-if="!isAffix(tag)" :size="12" @click.prevent.stop="closeSelectedTag(tag)" class="close-icon">
+        <el-icon v-if="!tagsViewStore.isAffixedViews(tag) " :size="12" @click.prevent.stop="closeSelectedTag(tag)" class="close-icon">
           <Close />
         </el-icon>
       </router-link>
     </div>
-    <ul v-show="visible" class="contextmenu-wrapper" :style="{ left: `${left}px`, top: `${top}px` }">
-      <li @click="refreshSelectedTag(selectedTag)">
-        刷新
-      </li>
-      <li v-if="!isAffix(selectedTag)" @click="closeSelectedTag(selectedTag)">
-        关闭
-      </li>
-      <li @click="closeOthersTags">
-        关闭其它
-      </li>
-      <li @click="closeAllTags(selectedTag)">
-        关闭所有
-      </li>
-    </ul>
+    <div>
+      <ul v-show="visible" class="contextmenu-wrapper" :style="{ left: `${left}px`, top: `${top}px` }">
+        <li @click="refreshSelectedTag(selectedTag)">
+          <el-icon>
+            <Refresh />
+          </el-icon>
+          刷新
+        </li>
+        <li @click="toggleAffix(selectedTag)">
+          <el-icon>
+            <Guding />
+          </el-icon>
+          {{ !tagsViewStore.isAffixedViews(selectedTag) ? '固定' : '取消固定' }}
+        </li>
+        <hr>
+        <li v-if="!tagsViewStore.isAffixedViews(selectedTag) " @click="closeSelectedTag(selectedTag)">
+          <el-icon>
+            <Close />
+          </el-icon>
+          关闭
+        </li>
+        <li @click="closeOthersTags">
+          <el-icon>
+            <Lrarrow />
+          </el-icon>
+          关闭其它
+        </li>
+        <li @click="closeAllTags(selectedTag)">
+          <el-icon>
+            <CircleClose />
+          </el-icon>
+          关闭所有
+        </li>
+      </ul>
+    </div>
     <div class="icon-wrapper">
       <ButtonAnimation animation="rotate">
-        <el-icon>
+        <el-icon @click="handleRefresh" :size="20">
           <Refresh />
         </el-icon>
       </ButtonAnimation>
@@ -230,7 +236,7 @@ listenerRouteChange((route) => {
 }
 
 .tagsview-wrapper {
-  width: 100%;
+  width: calc(100% - 40px);
   white-space: nowrap;
   overflow-x: auto;
   overflow-y: hidden;
@@ -285,34 +291,68 @@ listenerRouteChange((route) => {
   }
 }
 
+.icon-wrapper {
+  width: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-left: var(--layout-tagsview-tag-border);
+}
+
 .contextmenu-wrapper {
-  margin: 0;
+  width: 140px;
   z-index: 3000;
   position: fixed;
-  list-style-type: none;
-  padding: 5px 0;
+  padding: 5px;
   border-radius: 4px;
-  font-size: 12px;
+  font-size: 13px;
   color: var(--layout-tagsview-contextmenu-text-color);
   background-color: var(--layout-tagsview-contextmenu-bg-color);
-  box-shadow: var(--layout-tagsview-contextmenu-box-shadow);
+  border: var(--layout-tagsview-contextmenu-border);
+  list-style-type: none;
+  hr {
+    margin: 10px 0;
+    border: var(--layout-tagsview-contextmenu-border);
+  }
   li {
-    margin: 0;
-    padding: 7px 16px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    padding: 0 6px;
     cursor: pointer;
+    user-select: none;
+    margin: 0px;
+    .el-icon {
+      font-size: 16px;
+      margin-right: 8px;
+    }
     &:hover {
-      color: var(--layout-tagsview-contextmenu-hover-text-color);
+      border-radius: 4px;
       background-color: var(--layout-tagsview-contextmenu-hover-bg-color);
     }
   }
 }
 
-.icon-wrapper {
-  height: var(--layout-tagsview-height);
-  width: var(--layout-tagsview-height);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-left: var(--layout-tagsview-tag-border);
+.tagsview-wrapper {
+  // 整个滚动条
+  &::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+  // 滚动条上的滚动滑块
+  &::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background-color: #90939955;
+  }
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: #90939977;
+  }
+  &::-webkit-scrollbar-thumb:active {
+    background-color: #90939999;
+  }
+  // 当同时有垂直滚动条和水平滚动条时交汇的部分
+  &::-webkit-scrollbar-corner {
+    background-color: transparent;
+  }
 }
 </style>
